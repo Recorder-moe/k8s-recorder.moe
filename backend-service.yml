@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: livestreamrecorderbackend-service
+spec:
+  selector:
+    app: livestreamrecorderbackend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
