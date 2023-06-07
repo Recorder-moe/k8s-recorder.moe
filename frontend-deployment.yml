@@ -5,33 +5,33 @@ metadata:
 data:
   config.jsonc: |-
     {
-      "// Google Analytics, keep empty to disable": "",
-      "// G-XXXXXXXXXX": "",
+      // Google Analytics, keep empty to disable
+      // G-XXXXXXXXXX
       "GA_TRACKING_ID": "G-XXXXXXXXXX",
 
-      "// Azure Blob storage endpoint": "",
-      "// https://myaccount.blob.core.windows.net/mycontainer": "",
-      "// This one is for videos. (private access)": "",
+      // Azure Blob storage endpoint
+      // https://myaccount.blob.core.windows.net/mycontainer
+      // This one is for videos. (private access)
       "blobstorage": "BLOB_CONTAINERNAME_PRIVATE",
-      "// This one is for images. (public access)": "",
+      // This one is for images. (public access)
       "blobstorage_public": "BLOB_CONTAINERNAME_PUBLIC",
 
-      "// Azure COSMOS DB": "",
-      "// https://myaccount.documents.azure.com:443/": "",
+      // Azure COSMOS DB
+      // https://myaccount.documents.azure.com:443/
       "endpoint": "DB_CONNECTIONSTRINGS_PUBLIC_ENDPOINT",
-      "// Read-only Key!!!": "",
+      // Read-only Key!!!
       "key": "DB_CONNECTIONSTRINGS_PUBLIC",
 
-      "// OAuth2": "",
+      // OAuth2
       "clientId_google": "GOOGLE_CLIENTID",
       "clientId_github": "GITHUB_CLIENTID",
       "clientId_microsoft": "MICROSOFT_CLIENTID",
       "clientId_discord": "DISCORD_CLIENTID",
 
-      "// Azure Function API endpoint (LivestreamRecorderBackend)": "",
+      // Azure Function API endpoint (LivestreamRecorderBackend)
       "apiUrl": "",
 
-      "// Admin email, displayed in the FAQ page": "",
+      // Admin email, displayed in the FAQ page
       "adminEmail": "ADMIN_EMAIL"
     }
 ---

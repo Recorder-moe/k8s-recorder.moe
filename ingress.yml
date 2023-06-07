@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   name: livestreamrecorder-ingress
 spec:
+  ingressClassName: nginx
   rules:
     - http:
         paths:
