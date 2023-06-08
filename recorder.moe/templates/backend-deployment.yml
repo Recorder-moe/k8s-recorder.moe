@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "recorder.fullname" . }}-backend
+  labels:
+  {{- include "recorder.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.Kubernetes.Backend.replicas }}
+  selector:
+    matchLabels:
+      app: recorderbackend
+    {{- include "recorder.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: recorderbackend
+      {{- include "recorder.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - env:
+        - name: CORS_SUPPORT_CREDENTIALS
+          value: "true"
+        - name: FUNCTIONS_WORKER_RUNTIME
+          value: dotnet
+        - name: CORS_ALLOWED_ORIGINS
+          value: "https://{{ .Values.Host }}"
+        - name: FrontEndUri
+          value: "https://{{ .Values.Host }}"
+        - name: AzureWebJobsStorage
+          value: {{ quote .Values.AzureBlob.ConnectionString }}
+        - name: Seq_ServerUrl
+          value: {{ quote .Values.Seq.ServerUrl }}
+        - name: Seq_ApiKey
+          value: {{ quote .Values.Seq.APIKey }}
+        - name: ConnectionStrings_Private
+          value: "AccountEndpoint={{ .Values.AzureCosmosDB.Private.Endpoint }};AccountKey={{ .Values.AzureCosmosDB.Private.ReadWriteKey }};"
+        - name: ConnectionStrings_Public
+          value: "AccountEndpoint={{ .Values.AzureCosmosDB.Public.Endpoint }};AccountKey={{ .Values.AzureCosmosDB.Public.ReadWriteKey }};"
+        - name: Blob_ConnectionString
+          value: {{ quote .Values.AzureBlob.ConnectionString }}
+        - name: Blob_ContainerName
+          value: {{ quote .Values.AzureBlob.Private.ContainerName }}
+        - name: Blob_ContainerNamePublic
+          value: {{ quote .Values.AzureBlob.Public.ContainerName }}
+        - name: Registration_allowed
+          value: {{ quote .Values.Settings.RegistrationAllowed }}
+        - name: GITHUB_PROVIDER_AUTHENTICATION_ID
+          value: {{ quote .Values.OAuth2.GitHub.ClientID }}
+        - name: GITHUB_PROVIDER_AUTHENTICATION_SECRET
+          value: {{ quote .Values.OAuth2.GitHub.ClientSecret }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.Kubernetes.ClusterDomain }}
+        image: ghcr.io/recorder-moe/livestreamrecorderbackend:latest
+        name: recorderbackend
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        resources: {{- toYaml .Values.Kubernetes.Backend.resources | nindent
+          10 }}
