@@ -16,8 +16,8 @@ data:
       "clientId_github": "{{ .Values.OAuth2.GitHub.ClientID }}",
       "clientId_microsoft": "{{ .Values.OAuth2.Microsoft.ClientID }}",
       "clientId_discord": "{{ .Values.OAuth2.Discord.ClientID }}",
-      "apiUrl": "{{ .Values.Host }}",
-      "adminEmail": "{{ .Values.Settings.AdminEmail }}",
+      "apiUrl": "https://{{ .Values.Host }}",
+      "adminEmail": "{{ .Values.Settings.AdminEmail }}"
     }
 ---
 apiVersion: apps/v1
@@ -44,6 +44,7 @@ spec:
           value: {{ quote .Values.Kubernetes.ClusterDomain }}
         image: ghcr.io/recorder-moe/livestreamrecorderfrontend:latest
         name: livestreamrecorderfrontend
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
         resources: {{- toYaml .Values.Kubernetes.Frontend.resources | nindent

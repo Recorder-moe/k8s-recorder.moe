@@ -1,4 +1,7 @@
-Host: https://yours.recorder.moe
+# Your host name without https://
+# When using docker desktop kubernetes, install ingress-nginx controller and use 'kubernetes.docker.internal' as host
+# https://kubernetes.github.io/ingress-nginx/deploy/#docker-desktop
+Host: kubernetes.docker.internal
 
 Settings:
   # Google Analytics, input empty string to disable

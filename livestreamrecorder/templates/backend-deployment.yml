@@ -23,9 +23,9 @@ spec:
         - name: FUNCTIONS_WORKER_RUNTIME
           value: dotnet
         - name: CORS_ALLOWED_ORIGINS
-          value: {{ quote .Values.Host }}
+          value: "https://{{ .Values.Host }}"
         - name: FrontEndUri
-          value: {{ quote .Values.Host }}
+          value: "https://{{ .Values.Host }}"
         - name: AzureWebJobsStorage
           value: {{ quote .Values.AzureBlob.ConnectionString }}
         - name: Seq_ServerUrl
@@ -52,6 +52,7 @@ spec:
           value: {{ quote .Values.Kubernetes.ClusterDomain }}
         image: ghcr.io/recorder-moe/livestreamrecorderbackend:latest
         name: livestreamrecorderbackend
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
         resources: {{- toYaml .Values.Kubernetes.Backend.resources | nindent
