@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "livestreamrecorder.fullname" . }}-ingress
+  labels:
+  {{- include "livestreamrecorder.labels" . | nindent 4 }}
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: '{{ include "livestreamrecorder.fullname" . }}-backend-service'
+            port:
+              number: 80
+        path: /api
+        pathType: Prefix
+      - backend:
+          service:
+            name: '{{ include "livestreamrecorder.fullname" . }}-frontend-service'
+            port:
+              number: 80
+        path: /
+        pathType: Prefix

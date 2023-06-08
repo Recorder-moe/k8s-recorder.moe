@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "livestreamrecorder.fullname" . }}-backend
+  labels:
+  {{- include "livestreamrecorder.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.backend.replicas }}
+  selector:
+    matchLabels:
+      app: livestreamrecorderbackend
+    {{- include "livestreamrecorder.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: livestreamrecorderbackend
+      {{- include "livestreamrecorder.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - env:
+        - name: CORS_SUPPORT_CREDENTIALS
+          value: {{ quote .Values.backend.livestreamrecorderbackend.env.corsSupportCredentials
+            }}
+        - name: FUNCTIONS_WORKER_RUNTIME
+          value: {{ quote .Values.backend.livestreamrecorderbackend.env.functionsWorkerRuntime
+            }}
+        - name: CORS_ALLOWED_ORIGINS
+          value: {{ quote .Values.backend.livestreamrecorderbackend.env.corsAllowedOrigins
+            }}
+        - name: FrontEndUri
+          value: {{ quote .Values.backend.livestreamrecorderbackend.env.frontenduri }}
+        - name: AzureWebJobsStorage
+          value: {{ quote .Values.backend.livestreamrecorderbackend.env.azurewebjobsstorage
+            }}
+        - name: Seq_ServerUrl
+          value: {{ quote .Values.backend.livestreamrecorderbackend.env.seqServerurl }}
+        - name: Seq_ApiKey
+          value: {{ quote .Values.backend.livestreamrecorderbackend.env.seqApikey }}
+        - name: ConnectionStrings_Private
+          value: {{ quote .Values.backend.livestreamrecorderbackend.env.connectionstringsPrivate
+            }}
+        - name: ConnectionStrings_Public
+          value: {{ quote .Values.backend.livestreamrecorderbackend.env.connectionstringsPublic
+            }}
+        - name: Blob_ConnectionString
+          value: {{ quote .Values.backend.livestreamrecorderbackend.env.blobConnectionstring
+            }}
+        - name: Blob_ContainerName
+          value: {{ quote .Values.backend.livestreamrecorderbackend.env.blobContainername
+            }}
+        - name: Blob_ContainerNamePublic
+          value: {{ quote .Values.backend.livestreamrecorderbackend.env.blobContainernamepublic
+            }}
+        - name: Registration_allowed
+          value: {{ quote .Values.backend.livestreamrecorderbackend.env.registrationAllowed
+            }}
+        - name: GITHUB_PROVIDER_AUTHENTICATION_ID
+          value: {{ quote .Values.backend.livestreamrecorderbackend.env.githubProviderAuthenticationId
+            }}
+        - name: GITHUB_PROVIDER_AUTHENTICATION_SECRET
+          value: {{ quote .Values.backend.livestreamrecorderbackend.env.githubProviderAuthenticationSecret
+            }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.backend.livestreamrecorderbackend.image.repository }}:{{ .Values.backend.livestreamrecorderbackend.image.tag
+          | default .Chart.AppVersion }}
+        name: livestreamrecorderbackend
+        ports:
+        - containerPort: 80
+        resources: {{- toYaml .Values.backend.livestreamrecorderbackend.resources | nindent
+          10 }}

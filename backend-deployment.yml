@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: livestreamrecorderbackend
-          image: ghcr.io/recorder-moe/livestreamrecorderbackend
+          image: ghcr.io/recorder-moe/livestreamrecorderbackend:latest
           ports:
             - containerPort: 80
           resources:

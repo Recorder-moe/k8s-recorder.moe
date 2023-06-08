@@ -1,0 +1,80 @@
+backend:
+  livestreamrecorderbackend:
+    env:
+      azurewebjobsstorage: BLOB_CONNECTIONSTRING
+      blobConnectionstring: BLOB_CONNECTIONSTRING
+      blobContainername: BLOB_CONTAINERNAME_PRIVATE
+      blobContainernamepublic: BLOB_CONTAINERNAME_PUBLIC
+      connectionstringsPrivate: DB_CONNECTIONSTRINGS_PRIVATE
+      connectionstringsPublic: DB_CONNECTIONSTRINGS_PUBLIC
+      corsAllowedOrigins: https://recorder.moe
+      corsSupportCredentials: "true"
+      frontenduri: https://recorder.moe
+      functionsWorkerRuntime: dotnet
+      githubProviderAuthenticationId: GITHUB_CLIENTID
+      githubProviderAuthenticationSecret: GITHUB_SECRET
+      registrationAllowed: "true"
+      seqApikey: YOUR_API_KEY
+      seqServerurl: https://seq.recorder.moe
+    image:
+      repository: ghcr.io/recorder-moe/livestreamrecorderbackend
+      tag: latest
+    resources:
+      limits:
+        cpu: 250m
+        memory: 300Mi
+      requests:
+        memory: 100Mi
+  replicas: 1
+backendService:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  type: ClusterIP
+config:
+  configJsonc: |-
+    {
+      // Google Analytics, keep empty to disable
+      // G-XXXXXXXXXX
+      "GA_TRACKING_ID": "G-XXXXXXXXXX",
+      // Azure Blob storage endpoint
+      // https://myaccount.blob.core.windows.net/mycontainer
+      // This one is for videos. (private access)
+      "blobstorage": "BLOB_CONTAINERNAME_PRIVATE",
+      // This one is for images. (public access)
+      "blobstorage_public": "BLOB_CONTAINERNAME_PUBLIC",
+      // Azure COSMOS DB
+      // https://myaccount.documents.azure.com:443/
+      "endpoint": "DB_CONNECTIONSTRINGS_PUBLIC_ENDPOINT",
+      // Read-only Key!!!
+      "key": "DB_CONNECTIONSTRINGS_PUBLIC",
+      // OAuth2
+      "clientId_google": "GOOGLE_CLIENTID",
+      "clientId_github": "GITHUB_CLIENTID",
+      "clientId_microsoft": "MICROSOFT_CLIENTID",
+      "clientId_discord": "DISCORD_CLIENTID",
+      // Azure Function API endpoint (LivestreamRecorderBackend)
+      "apiUrl": "",
+      // Admin email, displayed in the FAQ page
+      "adminEmail": "ADMIN_EMAIL"
+    }
+frontend:
+  livestreamrecorderfrontend:
+    image:
+      repository: ghcr.io/recorder-moe/livestreamrecorderfrontend
+      tag: latest
+    resources:
+      limits:
+        cpu: 250m
+        memory: 300Mi
+      requests:
+        memory: 100Mi
+  replicas: 1
+frontendService:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  type: ClusterIP
+kubernetesClusterDomain: cluster.local
