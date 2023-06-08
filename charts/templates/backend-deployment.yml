@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "livestreamrecorder.fullname" . }}-backend
+  name: {{ include "recorder.fullname" . }}-backend
   labels:
-  {{- include "livestreamrecorder.labels" . | nindent 4 }}
+  {{- include "recorder.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.Kubernetes.Backend.replicas }}
   selector:
     matchLabels:
-      app: livestreamrecorderbackend
-    {{- include "livestreamrecorder.selectorLabels" . | nindent 6 }}
+      app: recorderbackend
+    {{- include "recorder.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app: livestreamrecorderbackend
-      {{- include "livestreamrecorder.selectorLabels" . | nindent 8 }}
+        app: recorderbackend
+      {{- include "recorder.selectorLabels" . | nindent 8 }}
     spec:
       containers:
       - env:
@@ -51,7 +51,7 @@ spec:
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.Kubernetes.ClusterDomain }}
         image: ghcr.io/recorder-moe/livestreamrecorderbackend:latest
-        name: livestreamrecorderbackend
+        name: recorderbackend
         imagePullPolicy: Always
         ports:
         - containerPort: 80

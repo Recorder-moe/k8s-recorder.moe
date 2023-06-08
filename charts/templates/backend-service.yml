@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "recorder.fullname" . }}-backend-service
+  labels:
+  {{- include "recorder.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    app: recorderbackend
+  {{- include "recorder.selectorLabels" . | nindent 4 }}
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

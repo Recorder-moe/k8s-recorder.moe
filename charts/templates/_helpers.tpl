@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "livestreamrecorder.name" -}}
+{{- define "recorder.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "livestreamrecorder.fullname" -}}
+{{- define "recorder.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "livestreamrecorder.chart" -}}
+{{- define "recorder.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "livestreamrecorder.labels" -}}
-helm.sh/chart: {{ include "livestreamrecorder.chart" . }}
-{{ include "livestreamrecorder.selectorLabels" . }}
+{{- define "recorder.labels" -}}
+helm.sh/chart: {{ include "recorder.chart" . }}
+{{ include "recorder.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "livestreamrecorder.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "livestreamrecorder.name" . }}
+{{- define "recorder.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "recorder.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "livestreamrecorder.serviceAccountName" -}}
+{{- define "recorder.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "livestreamrecorder.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "recorder.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

@@ -12,7 +12,7 @@ Settings:
   RegistrationAllowed: "true"
 
 AzureBlob:
-  ConnectionString: DefaultEndpointsProtocol=https;AccountName=mylivestreamrecorder;AccountKey=YOUR_KEY;EndpointSuffix=core.windows.net
+  ConnectionString: DefaultEndpointsProtocol=https;AccountName=myrecorder;AccountKey=YOUR_KEY;EndpointSuffix=core.windows.net
   Public:
     # This is a public access blob container for images.
     Endpoint: https://myaccount.blob.core.windows.net/mypubliccontainer

@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "livestreamrecorder.fullname" . }}-config
+  name: {{ include "recorder.fullname" . }}-config
   labels:
-  {{- include "livestreamrecorder.labels" . | nindent 4 }}
+  {{- include "recorder.labels" . | nindent 4 }}
 data:
   config.jsonc: |-
     {
@@ -23,27 +23,27 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "livestreamrecorder.fullname" . }}-frontend
+  name: {{ include "recorder.fullname" . }}-frontend
   labels:
-  {{- include "livestreamrecorder.labels" . | nindent 4 }}
+  {{- include "recorder.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.Kubernetes.Frontend.replicas }}
   selector:
     matchLabels:
-      app: livestreamrecorderfrontend
-    {{- include "livestreamrecorder.selectorLabels" . | nindent 6 }}
+      app: recorderfrontend
+    {{- include "recorder.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app: livestreamrecorderfrontend
-      {{- include "livestreamrecorder.selectorLabels" . | nindent 8 }}
+        app: recorderfrontend
+      {{- include "recorder.selectorLabels" . | nindent 8 }}
     spec:
       containers:
       - env:
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.Kubernetes.ClusterDomain }}
         image: ghcr.io/recorder-moe/livestreamrecorderfrontend:latest
-        name: livestreamrecorderfrontend
+        name: recorderfrontend
         imagePullPolicy: Always
         ports:
         - containerPort: 80
@@ -55,5 +55,5 @@ spec:
           subPath: config.jsonc
       volumes:
       - configMap:
-          name: {{ include "livestreamrecorder.fullname" . }}-config
+          name: {{ include "recorder.fullname" . }}-config
         name: config-volume
