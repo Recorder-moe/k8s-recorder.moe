@@ -5,9 +5,11 @@ metadata:
   labels:
   {{- include "livestreamrecorder.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.frontendService.type }}
+  type: ClusterIP
   selector:
     app: livestreamrecorderfrontend
   {{- include "livestreamrecorder.selectorLabels" . | nindent 4 }}
   ports:
-	{{- .Values.frontendService.ports | toYaml | nindent 2 -}}
+    - protocol: TCP
+      port: 80
+      targetPort: 80

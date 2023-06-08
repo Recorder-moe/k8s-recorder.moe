@@ -1,80 +1,66 @@
-backend:
-  livestreamrecorderbackend:
-    env:
-      azurewebjobsstorage: BLOB_CONNECTIONSTRING
-      blobConnectionstring: BLOB_CONNECTIONSTRING
-      blobContainername: BLOB_CONTAINERNAME_PRIVATE
-      blobContainernamepublic: BLOB_CONTAINERNAME_PUBLIC
-      connectionstringsPrivate: DB_CONNECTIONSTRINGS_PRIVATE
-      connectionstringsPublic: DB_CONNECTIONSTRINGS_PUBLIC
-      corsAllowedOrigins: https://recorder.moe
-      corsSupportCredentials: "true"
-      frontenduri: https://recorder.moe
-      functionsWorkerRuntime: dotnet
-      githubProviderAuthenticationId: GITHUB_CLIENTID
-      githubProviderAuthenticationSecret: GITHUB_SECRET
-      registrationAllowed: "true"
-      seqApikey: YOUR_API_KEY
-      seqServerurl: https://seq.recorder.moe
-    image:
-      repository: ghcr.io/recorder-moe/livestreamrecorderbackend
-      tag: latest
+Host: https://yours.recorder.moe
+
+Settings:
+  # Google Analytics, input empty string to disable
+  GATrackingID: G-XXXXXXXXXX
+  # This will display on the page
+  AdminEmail: your@email.com
+  # You can only register one account if this is "false"
+  RegistrationAllowed: "true"
+
+AzureBlob:
+  ConnectionString: DefaultEndpointsProtocol=https;AccountName=mylivestreamrecorder;AccountKey=YOUR_KEY;EndpointSuffix=core.windows.net
+  Public:
+    # This is a public access blob container for images.
+    Endpoint: https://myaccount.blob.core.windows.net/mypubliccontainer
+    ContainerName: mypubliccontainer
+  Private:
+    # This is a private access blob container for videos.
+    Endpoint: https://myaccount.blob.core.windows.net/myprivatecontainer
+    ContainerName: myprivatecontainer
+
+AzureCosmosDB:
+  # This is the database for Videos, Channels data.
+  Public:
+    Endpoint: https://myaccount.documents.azure.com:443/
+    ReadonlyKey: DB_PUBLIC_READONLY_KEY
+    ReadWriteKey: DB_PUBLIC_READWRITE_KEY
+  # This is the database for User data.
+  Private:
+    Endpoint: https://myprivateaccount.documents.azure.com:443/
+    ReadWriteKey: DB_PRIVATE_READWRITE_KEY
+
+OAuth2:
+  # Input empty string to disabled
+  Google:
+    ClientID: GOOGLE_CLIENTID
+  GitHub:
+    ClientID: GITHUB_CLIENTID
+    ClientSecret: GITHUB_SECRET
+  Microsoft:
+    ClientID: MICROSOFT_CLIENTID
+  Discord:
+    ClientID: GOOGLE_CLIENTID
+
+Seq:
+  ServerUrl: https://12.34.56.78
+  APIKey: YOUR_API_KEY
+
+Kubernetes:
+  ClusterDomain: recorder.moe.local
+  Frontend:
+    replicas: 1
     resources:
       limits:
         cpu: 250m
         memory: 300Mi
       requests:
         memory: 100Mi
-  replicas: 1
-backendService:
-  ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 80
-  type: ClusterIP
-config:
-  configJsonc: |-
-    {
-      // Google Analytics, keep empty to disable
-      // G-XXXXXXXXXX
-      "GA_TRACKING_ID": "G-XXXXXXXXXX",
-      // Azure Blob storage endpoint
-      // https://myaccount.blob.core.windows.net/mycontainer
-      // This one is for videos. (private access)
-      "blobstorage": "BLOB_CONTAINERNAME_PRIVATE",
-      // This one is for images. (public access)
-      "blobstorage_public": "BLOB_CONTAINERNAME_PUBLIC",
-      // Azure COSMOS DB
-      // https://myaccount.documents.azure.com:443/
-      "endpoint": "DB_CONNECTIONSTRINGS_PUBLIC_ENDPOINT",
-      // Read-only Key!!!
-      "key": "DB_CONNECTIONSTRINGS_PUBLIC",
-      // OAuth2
-      "clientId_google": "GOOGLE_CLIENTID",
-      "clientId_github": "GITHUB_CLIENTID",
-      "clientId_microsoft": "MICROSOFT_CLIENTID",
-      "clientId_discord": "DISCORD_CLIENTID",
-      // Azure Function API endpoint (LivestreamRecorderBackend)
-      "apiUrl": "",
-      // Admin email, displayed in the FAQ page
-      "adminEmail": "ADMIN_EMAIL"
-    }
-frontend:
-  livestreamrecorderfrontend:
-    image:
-      repository: ghcr.io/recorder-moe/livestreamrecorderfrontend
-      tag: latest
+  Backend:
+    replicas: 1
     resources:
       limits:
         cpu: 250m
         memory: 300Mi
       requests:
         memory: 100Mi
-  replicas: 1
-frontendService:
-  ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 80
-  type: ClusterIP
-kubernetesClusterDomain: cluster.local

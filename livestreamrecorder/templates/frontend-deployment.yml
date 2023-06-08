@@ -5,7 +5,20 @@ metadata:
   labels:
   {{- include "livestreamrecorder.labels" . | nindent 4 }}
 data:
-  config.jsonc: {{ .Values.config.configJsonc | toYaml | indent 1 }}
+  config.jsonc: |-
+    {
+      "GA_TRACKING_ID": "{{ .Values.Settings.GATrackingID }}",
+      "blobstorage": "{{ .Values.AzureBlob.Private.Endpoint }}",
+      "blobstorage_public": "{{ .Values.AzureBlob.Public.Endpoint }}",
+      "endpoint": "{{ .Values.AzureCosmosDB.Public.Endpoint }}",
+      "key": "{{ .Values.AzureCosmosDB.Public.ReadonlyKey }}",
+      "clientId_google": "{{ .Values.OAuth2.Google.ClientID }}",
+      "clientId_github": "{{ .Values.OAuth2.GitHub.ClientID }}",
+      "clientId_microsoft": "{{ .Values.OAuth2.Microsoft.ClientID }}",
+      "clientId_discord": "{{ .Values.OAuth2.Discord.ClientID }}",
+      "apiUrl": "{{ .Values.Host }}",
+      "adminEmail": "{{ .Values.Settings.AdminEmail }}",
+    }
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -14,7 +27,7 @@ metadata:
   labels:
   {{- include "livestreamrecorder.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.frontend.replicas }}
+  replicas: {{ .Values.Kubernetes.Frontend.replicas }}
   selector:
     matchLabels:
       app: livestreamrecorderfrontend
@@ -28,13 +41,12 @@ spec:
       containers:
       - env:
         - name: KUBERNETES_CLUSTER_DOMAIN
-          value: {{ quote .Values.kubernetesClusterDomain }}
-        image: {{ .Values.frontend.livestreamrecorderfrontend.image.repository }}:{{ .Values.frontend.livestreamrecorderfrontend.image.tag
-          | default .Chart.AppVersion }}
+          value: {{ quote .Values.Kubernetes.ClusterDomain }}
+        image: ghcr.io/recorder-moe/livestreamrecorderfrontend:latest
         name: livestreamrecorderfrontend
         ports:
         - containerPort: 80
-        resources: {{- toYaml .Values.frontend.livestreamrecorderfrontend.resources | nindent
+        resources: {{- toYaml .Values.Kubernetes.Frontend.resources | nindent
           10 }}
         volumeMounts:
         - mountPath: /usr/share/nginx/html/config.jsonc
