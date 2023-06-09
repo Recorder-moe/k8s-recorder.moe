@@ -12,7 +12,7 @@ helm repo add recordermoe https://recorder-moe.github.io/k8s-recorder.moe
 
 If you've already added this repository before, run `helm repo update` to get the latest package versions. You can then search for available charts with `helm search repo recordermoe`.
 
-Before installing a chart, create a `values.yaml` file and override default settings according to your needs. Download the [default values.yaml](https://raw.githubusercontent.com/recorder-moe/k8s-recorder.moe/master/values.yaml), and edit it as required:
+Before installing a chart, create a `values.yaml` file and override default settings according to your needs. Download the [default values.yaml](/recordermoe/values.yaml), and edit it as required:
 
 ```bash
 curl https://raw.githubusercontent.com/Recorder-moe/k8s-recorder.moe/master/recordermoe/values.yaml > values.yaml
@@ -27,10 +27,10 @@ helm install my-recorder recordermoe/recordermoe --values values.yaml
 Check if my-recorder is running by executing:
 
 ```bash
-kubectl get all
+kubectl get all -l app.kubernetes.io/instance=my-recorder
 ```
 
-To uninstall a chart, run:
+To uninstall the chart, run:
 
 ```bash
 helm delete my-recorder
