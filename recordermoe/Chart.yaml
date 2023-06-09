@@ -1,5 +1,5 @@
 apiVersion: v2
-name: recorder.moe
+name: recordermoe
 description: Recorder.moe is an advanced open-source automation livestream recording system.
 keywords:
   - "recorder.moe"
