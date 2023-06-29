@@ -7,17 +7,17 @@ metadata:
 data:
   config.jsonc: |-
     {
-      "GA_TRACKING_ID": "{{ .Values.Settings.GATrackingID }}",
-      "blobstorage": "{{ .Values.AzureBlob.Private.Endpoint }}",
-      "blobstorage_public": "{{ .Values.AzureBlob.Public.Endpoint }}",
-      "endpoint": "{{ .Values.AzureCosmosDB.Public.Endpoint }}",
-      "key": "{{ .Values.AzureCosmosDB.Public.ReadonlyKey }}",
-      "clientId_google": "{{ .Values.OAuth2.Google.ClientID }}",
-      "clientId_github": "{{ .Values.OAuth2.GitHub.ClientID }}",
-      "clientId_microsoft": "{{ .Values.OAuth2.Microsoft.ClientID }}",
-      "clientId_discord": "{{ .Values.OAuth2.Discord.ClientID }}",
-      "apiUrl": "https://{{ .Values.Host }}",
-      "adminEmail": "{{ .Values.Settings.AdminEmail }}"
+      "GA_TRACKING_ID": "{{ .Values.settings.gATrackingID }}",
+      "blobstorage": "{{ .Values.azureBlob.private.endpoint }}",
+      "blobstorage_public": "{{ .Values.azureBlob.public.endpoint }}",
+      "endpoint": "{{ .Values.azureCosmosDB.public.endpoint }}",
+      "key": "{{ .Values.azureCosmosDB.public.readonlyKey }}",
+      "clientId_google": "{{ .Values.oAuth2.google.clientID }}",
+      "clientId_github": "{{ .Values.oAuth2.gitHub.clientID }}",
+      "clientId_microsoft": "{{ .Values.oAuth2.microsoft.clientID }}",
+      "clientId_discord": "{{ .Values.oAuth2.discord.clientID }}",
+      "apiUrl": "https://{{ .Values.host }}",
+      "adminEmail": "{{ .Values.settings.adminEmail }}"
     }
 ---
 apiVersion: apps/v1
@@ -27,7 +27,7 @@ metadata:
   labels:
   {{- include "recorder.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.Kubernetes.Frontend.replicas }}
+  replicas: {{ .Values.kubernetes.frontend.replicas }}
   selector:
     matchLabels:
       app: recorderfrontend
@@ -41,13 +41,13 @@ spec:
       containers:
       - env:
         - name: KUBERNETES_CLUSTER_DOMAIN
-          value: {{ quote .Values.Kubernetes.ClusterDomain }}
+          value: {{ quote .Values.kubernetes.clusterDomain }}
         image: ghcr.io/recorder-moe/livestreamrecorderfrontend:latest
         name: recorderfrontend
         imagePullPolicy: Always
         ports:
         - containerPort: 80
-        resources: {{- toYaml .Values.Kubernetes.Frontend.resources | nindent
+        resources: {{- toYaml .Values.kubernetes.frontend.resources | nindent
           10 }}
         volumeMounts:
         - mountPath: /usr/share/nginx/html/config.jsonc

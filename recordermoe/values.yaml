@@ -1,57 +1,57 @@
 # Your host name without https://
 # When using docker desktop kubernetes, install ingress-nginx controller and use 'kubernetes.docker.internal' as host
 # https://kubernetes.github.io/ingress-nginx/deploy/#docker-desktop
-Host: kubernetes.docker.internal
+host: kubernetes.docker.internal
 
-Settings:
+settings:
   # Google Analytics, input empty string to disable
-  GATrackingID: G-XXXXXXXXXX
+  gATrackingID: G-XXXXXXXXXX
   # This will display on the page
-  AdminEmail: your@email.com
+  adminEmail: your@email.com
   # You can only register one account if this is "false"
-  RegistrationAllowed: "true"
+  registrationAllowed: "true"
 
-AzureBlob:
-  ConnectionString: DefaultEndpointsProtocol=https;AccountName=myrecorder;AccountKey=YOUR_KEY;EndpointSuffix=core.windows.net
-  Public:
+azureBlob:
+  connectionString: DefaultEndpointsProtocol=https;AccountName=myrecorder;AccountKey=YOUR_KEY;EndpointSuffix=core.windows.net
+  public:
     # This is a public access blob container for images.
-    Endpoint: https://myaccount.blob.core.windows.net/mypubliccontainer
-    ContainerName: mypubliccontainer
-  Private:
+    endpoint: https://myaccount.blob.core.windows.net/mypubliccontainer
+    containerName: mypubliccontainer
+  private:
     # This is a private access blob container for videos.
-    Endpoint: https://myaccount.blob.core.windows.net/myprivatecontainer
-    ContainerName: myprivatecontainer
+    endpoint: https://myaccount.blob.core.windows.net/myprivatecontainer
+    containerName: myprivatecontainer
 
-AzureCosmosDB:
+azureCosmosDB:
   # This is the database for Videos, Channels data.
-  Public:
-    Endpoint: https://myaccount.documents.azure.com:443/
-    ReadonlyKey: DB_PUBLIC_READONLY_KEY
-    ReadWriteKey: DB_PUBLIC_READWRITE_KEY
+  public:
+    endpoint: https://myaccount.documents.azure.com:443/
+    readonlyKey: DB_PUBLIC_READONLY_KEY
+    readWriteKey: DB_PUBLIC_READWRITE_KEY
   # This is the database for User data.
-  Private:
-    Endpoint: https://myprivateaccount.documents.azure.com:443/
-    ReadWriteKey: DB_PRIVATE_READWRITE_KEY
+  private:
+    endpoint: https://myprivateaccount.documents.azure.com:443/
+    readWriteKey: DB_PRIVATE_READWRITE_KEY
 
-OAuth2:
+oAuth2:
   # Input empty string to disabled
-  Google:
-    ClientID: GOOGLE_CLIENTID
-  GitHub:
-    ClientID: GITHUB_CLIENTID
-    ClientSecret: GITHUB_SECRET
-  Microsoft:
-    ClientID: MICROSOFT_CLIENTID
-  Discord:
-    ClientID: GOOGLE_CLIENTID
+  google:
+    clientID: GOOGLE_CLIENTID
+  gitHub:
+    clientID: GITHUB_CLIENTID
+    clientSecret: GITHUB_SECRET
+  microsoft:
+    clientID: MICROSOFT_CLIENTID
+  discord:
+    clientID: GOOGLE_CLIENTID
 
-Seq:
-  ServerUrl: https://12.34.56.78
-  APIKey: YOUR_API_KEY
+seq:
+  serverUrl: https://12.34.56.78
+  apiKey: YOUR_API_KEY
 
-Kubernetes:
-  ClusterDomain: recorder.moe.local
-  Frontend:
+kubernetes:
+  clusterDomain: recorder.moe.local
+  frontend:
     replicas: 1
     resources:
       limits:
@@ -59,7 +59,7 @@ Kubernetes:
         memory: 300Mi
       requests:
         memory: 100Mi
-  Backend:
+  backend:
     replicas: 1
     resources:
       limits:
