@@ -2,6 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "recorder.fullname" . }}-ingress
+  namespace: {{ .Release.Namespace }}
   labels:
   {{- include "recorder.labels" . | nindent 4 }}
 spec:

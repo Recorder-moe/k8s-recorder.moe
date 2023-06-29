@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "recorder.fullname" . }}-frontend-service
+  namespace: {{ .Release.Namespace }}
   labels:
   {{- include "recorder.labels" . | nindent 4 }}
 spec:
