@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "recorder.fullname" . }}-nfs-pvc
+  namespace: {{ .Release.Namespace }}
+  labels:
+  {{- include "recorder.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.kubernetes.nfs.storage }}
+  storageClassName: ""
+  volumeName: {{ include "recorder.fullname" . }}-nfs-pv
