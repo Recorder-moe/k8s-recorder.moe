@@ -82,7 +82,7 @@ heartbeat:
   endpoint: ""
 
 kubernetes:
-  clusterDomain: recorder.moe.local
+  clusterDomain: cluster.local
 
   # ingressClassName is for frontend and backend ingress settings.
   # When using Traefik set this to "" (empty string).
