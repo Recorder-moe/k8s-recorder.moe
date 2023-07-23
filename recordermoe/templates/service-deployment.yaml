@@ -52,7 +52,7 @@ spec:
         - name: Azure__BlobStorage__RetentionDays
           value: {{ quote .Values.azureBlob.retentionDays }}
         - name: Kubernetes__UseTheSameCluster
-          value: true
+          value: "true"
         - name: Kubernetes__Namespace
           value: {{ .Release.Namespace }}
         - name: Kubernetes__PVCName
@@ -62,13 +62,13 @@ spec:
           value: {{ quote .Values.kubernetes.service.pvcName }}
           {{- end }}
         - name: Twitch__Enabled
-          value: {{ .Values.twitch.enabled }}
+          value: {{ quote .Values.twitch.enabled }}
         - name: Twitch__ClientId
           value: {{ quote .Values.twitch.clientID }}
         - name: Twitch__ClientSecret
           value: {{ quote .Values.twitch.clientSecret }}
         - name: Discord__Enabled
-          value: {{ .Values.discord.enabled }}
+          value: {{ quote .Values.discord.enabled }}
         - name: Discord__Webhook
           value: {{ quote .Values.discord.webhook }}
         - name: Discord__WebhookWarning
@@ -94,10 +94,10 @@ spec:
         - name: Discord__Emotes__FC2
           value: {{ quote .Values.discord.emotes.fc2 }}
         - name: Heartbeat__Enabled
-          value: {{ .Values.heartbeat.enabled }}
+          value: {{ quote .Values.heartbeat.enabled }}
         - name: Heartbeat__Endpoint
           value: {{ quote .Values.heartbeat.endpoint }}
         - name: Heartbeat__Interval
-          value: 300
+          value: "300"
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetes.clusterDomain }}

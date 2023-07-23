@@ -50,7 +50,7 @@ oAuth2:
   microsoft:
     clientID: MICROSOFT_CLIENTID
   discord:
-    clientID: GOOGLE_CLIENTID
+    clientID: DISCORD_CLIENTID
 
 seq:
   serverUrl: https://12.34.56.78
@@ -85,8 +85,8 @@ kubernetes:
   clusterDomain: recorder.moe.local
 
   # ingressClassName is for frontend and backend ingress settings.
-  # When using Traefik set this to empty string .
-  # When using docker desktop kubernetes install ingress-nginx controller and set this to nginx
+  # When using Traefik set this to "" (empty string).
+  # When using docker desktop kubernetes install ingress-nginx controller and set this to "nginx".
   ingressClassName: nginx
 
   frontend:
@@ -109,10 +109,10 @@ kubernetes:
     # service replicas is limited to 1
     resources:
       limits:
-        cpu: 250m
-        memory: 300Mi
+        cpu: 1000m
+        memory: 1000Mi
       requests:
-        memory: 100Mi
+        memory: 500Mi
 
     # pvcName is the name for PersistentVolumeClaim for service.
     # !Only used when nfs.enable is false.
@@ -123,7 +123,7 @@ kubernetes:
     enable: true
 
     # customPVC is the name for PersistentVolumeClaim used as an underlay for NFS.
-    # Please create the PVC in the same namespace manually. (With storage about 10Gi)
+    # !Please create the PVC in 'kube-system' namespace manually. (With storage about 10Gi)
     # Keep this empty to use any other solutions below.
     customPVC: ""
 

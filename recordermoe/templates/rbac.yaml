@@ -1,0 +1,60 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: recordermoe
+  name: recordermoe-role
+  labels:
+  {{- include "recorder.labels" . | nindent 4 }}
+rules:
+- apiGroups: ["batch"]
+  resources: ["jobs"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["list", "create"]
+- apiGroups: [""]
+  resources: ["persistentvolumeclaims"]
+  verbs: ["list"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: recordermoe
+  name: recordermoe-rb
+  labels:
+  {{- include "recorder.labels" . | nindent 4 }}
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: recordermoe
+roleRef:
+  kind: Role
+  name: recordermoe-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: recordermoe-list-namespace-role
+  labels:
+  {{- include "recorder.labels" . | nindent 4 }}
+rules:
+- apiGroups: [""]
+  resources: ["namespaces"]
+  verbs: ["list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: recordermoe-list-namespace-crb
+  labels:
+  {{- include "recorder.labels" . | nindent 4 }}
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: recordermoe
+roleRef:
+  kind: ClusterRole
+  name: recordermoe-list-namespace-role
+  apiGroup: rbac.authorization.k8s.io
