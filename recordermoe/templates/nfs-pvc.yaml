@@ -1,3 +1,4 @@
+{{- if .Values.kubernetes.nfs.enable -}}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -14,3 +15,4 @@ spec:
       storage: {{ .Values.kubernetes.nfs.storage }}
   storageClassName: ""
   volumeName: {{ include "recorder.fullname" . }}-nfs-pv
+{{- end -}}

@@ -67,10 +67,18 @@ kubernetes:
         memory: 300Mi
       requests:
         memory: 100Mi
+
   nfs:
-    storage: 10Gi
+    enable: true
+
+    # customPVC is the name for PersistentVolumeClaim used as an underlay for NFS.
+    # Please create the PVC in the same namespace manually. (With storage about 10Gi)
+    # Keep this empty to use any other solutions below.
+    customPVC: ""
+
     # bindHostDirectory bind the host directory into nfs-server for share.
-    # Note that this is not working with Docker Desktop with Windows.
+    # Not recommend and can't used with customPVC.
+    # !Note that this is not working with Docker Desktop with Windows.
     # Issue: https://github.com/sjiveson/nfs-server-alpine/issues/43
     bindHostDirectory: false
     hostPath: /recordermoe-nfs

@@ -1,3 +1,4 @@
+{{- if .Values.kubernetes.nfs.enable -}}
 ---
 kind: Service
 apiVersion: v1
@@ -19,3 +20,4 @@ spec:
     - name: udp-111
       port: 111
       protocol: UDP
+{{- end -}}

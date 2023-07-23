@@ -1,3 +1,4 @@
+{{- if .Values.kubernetes.nfs.enable -}}
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -29,3 +30,4 @@ spec:
     volumeAttributes:
       server: {{ include "recorder.fullname" . }}-nfs-service.{{ .Release.Namespace }}
       share: /
+{{- end -}}

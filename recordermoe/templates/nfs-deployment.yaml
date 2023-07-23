@@ -1,3 +1,4 @@
+{{- if .Values.kubernetes.nfs.enable -}}
 ---
 kind: Deployment
 apiVersion: apps/v1
@@ -45,11 +46,15 @@ spec:
               protocol: UDP
       volumes:
         - name: nfs-vol
-          {{- if eq .Values.kubernetes.nfs.bindHostDirectory false }}
-          emptyDir:
-            sizeLimit: {{ .Values.kubernetes.nfs.storage }}
-          {{- else }}
+          {{- if .Values.kubernetes.nfs.customPVC }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.kubernetes.nfs.customPVC }}
+          {{- else if eq .Values.kubernetes.nfs.bindHostDirectory true }}
           hostPath:
             type: "DirectoryOrCreate"
             path: {{ .Values.kubernetes.nfs.hostPath }}
+          {{- else }}
+          emptyDir:
+            sizeLimit: 10Gi
           {{- end }}
+{{- end -}}
