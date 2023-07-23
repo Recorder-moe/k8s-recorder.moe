@@ -85,7 +85,7 @@ kubernetes:
   clusterDomain: cluster.local
 
   # ingressClassName is for frontend and backend ingress settings.
-  # When using Traefik set this to "" (empty string).
+  # When using Traefik set this to "traefik".
   # When using docker desktop kubernetes install ingress-nginx controller and set this to "nginx".
   ingressClassName: nginx
 
