@@ -29,7 +29,7 @@ spec:
         - name: FrontEndUri
           value: "https://{{ .Values.host }}"
         - name: AzureWebJobsStorage
-          value: {{ quote .Values.azureBlob.connectionString }}
+          value: "DefaultEndpointsProtocol=https;AccountName={{ .Values.azureBlob.storageAccountName }};AccountKey={{ .Values.azureBlob.storageAccountKey }};EndpointSuffix=core.windows.net"
         - name: Seq_ServerUrl
           value: {{ quote .Values.seq.serverUrl }}
         - name: Seq_ApiKey
@@ -39,7 +39,7 @@ spec:
         - name: ConnectionStrings_Public
           value: "AccountEndpoint={{ .Values.azureCosmosDB.public.endpoint }};AccountKey={{ .Values.azureCosmosDB.public.readWriteKey }};"
         - name: Blob_ConnectionString
-          value: {{ quote .Values.azureBlob.connectionString }}
+          value: "DefaultEndpointsProtocol=https;AccountName={{ .Values.azureBlob.storageAccountName }};AccountKey={{ .Values.azureBlob.storageAccountKey }};EndpointSuffix=core.windows.net"
         - name: Blob_ContainerName
           value: {{ quote .Values.azureBlob.private.containerName }}
         - name: Blob_ContainerNamePublic

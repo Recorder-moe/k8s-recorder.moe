@@ -1,0 +1,103 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "recorder.fullname" . }}-service
+  namespace: {{ .Release.Namespace }}
+  labels:
+  {{- include "recorder.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recorderservice
+    {{- include "recorder.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: recorderservice
+      {{- include "recorder.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: recorderservice
+        image: ghcr.io/recorder-moe/livestreamrecorderservice:latest
+        imagePullPolicy: Always
+        resources: {{- toYaml .Values.kubernetes.service.resources | nindent
+          10 }}
+        env:
+        - name: Serilog__WriteTo__0__Args__apiKey
+          value: {{ quote .Values.seq.apiKey }}
+        - name: Serilog__WriteTo__0__Args__serverUrl
+          value: {{ quote .Values.seq.serverUrl }}
+        - name: ConnectionStrings__Public
+          value: "AccountEndpoint={{ .Values.azureCosmosDB.public.endpoint }};AccountKey={{ .Values.azureCosmosDB.public.readWriteKey }};"
+        - name: ConnectionStrings__Private
+          value: "AccountEndpoint={{ .Values.azureCosmosDB.private.endpoint }};AccountKey={{ .Values.azureCosmosDB.private.readWriteKey }};"
+        - name: Service__JobService
+          value: Kubernetes
+        - name: Service__SharedVolumeService
+          value: CustomPVC
+        - name: Service__StorageService
+          value: AzureBlobStorage
+        - name: Service__DatabaseService
+          value: AzureCosmosDB
+        - name: Azure__BlobStorage__StorageAccountName
+          value: {{ quote .Values.azureBlob.storageAccountName }}
+        - name: Azure__BlobStorage__StorageAccountKey
+          value: {{ quote .Values.azureBlob.storageAccountKey }}
+        - name: Azure__BlobStorage__BlobContainerName_Private
+          value: {{ quote .Values.azureBlob.private.containerName }}
+        - name: Azure__BlobStorage__BlobContainerName_Public
+          value: {{ quote .Values.azureBlob.public.containerName }}
+        - name: Azure__BlobStorage__RetentionDays
+          value: {{ quote .Values.azureBlob.retentionDays }}
+        - name: Kubernetes__UseTheSameCluster
+          value: true
+        - name: Kubernetes__Namespace
+          value: {{ .Release.Namespace }}
+        - name: Kubernetes__PVCName
+          {{- if eq .Values.kubernetes.nfs.enable true }}
+          value: {{ include "recorder.fullname" . }}-nfs-pvc
+          {{- else }}
+          value: {{ quote .Values.kubernetes.service.pvcName }}
+          {{- end }}
+        - name: Twitch__Enabled
+          value: {{ .Values.twitch.enabled }}
+        - name: Twitch__ClientId
+          value: {{ quote .Values.twitch.clientID }}
+        - name: Twitch__ClientSecret
+          value: {{ quote .Values.twitch.clientSecret }}
+        - name: Discord__Enabled
+          value: {{ .Values.discord.enabled }}
+        - name: Discord__Webhook
+          value: {{ quote .Values.discord.webhook }}
+        - name: Discord__WebhookWarning
+          value: {{ quote .Values.discord.webhookWarning }}
+        - name: Discord__WebhookAdmin
+          value: {{ quote .Values.discord.webhookAdmin }}
+        - name: Discord__FrontEndHost
+          value: {{ quote .Values.host }}
+        - name: Discord__Mention__Channel
+          value: {{ quote .Values.discord.mention.channel }}
+        - name: Discord__Mention__Deleted
+          value: {{ quote .Values.discord.mention.deleted }}
+        - name: Discord__Mention__Admin
+          value: {{ quote .Values.discord.mention.admin }}
+        - name: Discord__Emotes__RecorderMoe
+          value: {{ quote .Values.discord.emotes.recordermoe }}
+        - name: Discord__Emotes__Youtube
+          value: {{ quote .Values.discord.emotes.youtube }}
+        - name: Discord__Emotes__Twitch
+          value: {{ quote .Values.discord.emotes.twitch }}
+        - name: Discord__Emotes__Twitcasting
+          value: {{ quote .Values.discord.emotes.twitcasting }}
+        - name: Discord__Emotes__FC2
+          value: {{ quote .Values.discord.emotes.fc2 }}
+        - name: Heartbeat__Enabled
+          value: {{ .Values.heartbeat.enabled }}
+        - name: Heartbeat__Endpoint
+          value: {{ quote .Values.heartbeat.endpoint }}
+        - name: Heartbeat__Interval
+          value: 300
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetes.clusterDomain }}

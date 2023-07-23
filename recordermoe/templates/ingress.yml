@@ -7,7 +7,9 @@ metadata:
   labels:
   {{- include "recorder.labels" . | nindent 4 }}
 spec:
-  ingressClassName: nginx
+  {{- if .Values.kubernetes.ingressClassName }}
+  ingressClassName: {{ .Values.kubernetes.ingressClassName }}
+  {{- end }}
   rules:
   - host: {{ .Values.host }}
     http:

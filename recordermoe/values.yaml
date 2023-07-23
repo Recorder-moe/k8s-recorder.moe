@@ -1,38 +1,45 @@
-# Your host name without https://
-# When using docker desktop kubernetes, install ingress-nginx controller and use 'kubernetes.docker.internal' as host
+# host is your host name without https://
+# When using docker desktop kubernetes install ingress-nginx controller and use 'kubernetes.docker.internal' as host
 # https://kubernetes.github.io/ingress-nginx/deploy/#docker-desktop
 host: kubernetes.docker.internal
 
 settings:
-  # Google Analytics, input empty string to disable
+  # gATrackingID is Google Analytics tracking id
+  # Input empty string to disable
   gATrackingID: G-XXXXXXXXXX
-  # This will display on the page
+  # adminEmail will display on the page
   adminEmail: your@email.com
-  # You can only register one account if this is "false"
+  # registrationAllowed setting determines whether users are allowed to register.
+  # If set to false, only the first registered user will be allowed and will become an admin.
   registrationAllowed: "true"
 
 azureBlob:
-  connectionString: DefaultEndpointsProtocol=https;AccountName=myrecorder;AccountKey=YOUR_KEY;EndpointSuffix=core.windows.net
+  storageAccountName: myrecorder
+  storageAccountKey: YOUR_KEY
+  # public is the public access blob container for images.
   public:
-    # This is a public access blob container for images.
     endpoint: https://myaccount.blob.core.windows.net/mypubliccontainer
     containerName: mypubliccontainer
+  # private is the private access blob container for videos.
   private:
-    # This is a private access blob container for videos.
     endpoint: https://myaccount.blob.core.windows.net/myprivatecontainer
     containerName: myprivatecontainer
+  # retentionDays is the number of days to keep the video files.
+  retentionDays: 4
 
 azureCosmosDB:
-  # This is the database for Videos, Channels data.
+  # public is the database for Videos, Channels data.
   public:
     endpoint: https://myaccount.documents.azure.com:443/
     readonlyKey: DB_PUBLIC_READONLY_KEY
     readWriteKey: DB_PUBLIC_READWRITE_KEY
-  # This is the database for User data.
+  # private is the database for User data.
   private:
     endpoint: https://myprivateaccount.documents.azure.com:443/
     readWriteKey: DB_PRIVATE_READWRITE_KEY
 
+# oAuth2 is the configuration for OAuth 2.0 login.
+# !Notice that you MUST setup at least one provider since this system is only using OAuth 2.0 for authentication.
 oAuth2:
   # Input empty string to disabled
   google:
@@ -49,8 +56,39 @@ seq:
   serverUrl: https://12.34.56.78
   apiKey: YOUR_API_KEY
 
+twitch:
+  enabled: false
+  clientID: TWITCH_CLIENTID
+  clientSecret: TWITCH_SECRET
+
+discord:
+  enabled: false
+  webhook: ""
+  webhookWarning: ""
+  webhookAdmin: ""
+  mention:
+    channel: "<@&1088065141721022535>"
+    deleted: "<@&1088065179855618108>"
+    admin: "<@&1068992903797542934>"
+  emotes:
+    recordermoe: "<:logo:1087793006922436748>"
+    youtube: "<:youtube:1087785692605722767>"
+    twitch: "<:twitch:1087786596138491934>"
+    twitcasting: "<:twitcasting:1087785961963929742>"
+    fc2: "<:fc2:1113124319346823240>"
+
+heartbeat:
+  enabled: false
+  endpoint: ""
+
 kubernetes:
   clusterDomain: recorder.moe.local
+
+  # ingressClassName is for frontend and backend ingress settings.
+  # When using Traefik set this to empty string .
+  # When using docker desktop kubernetes install ingress-nginx controller and set this to nginx
+  ingressClassName: nginx
+
   frontend:
     replicas: 1
     resources:
@@ -67,6 +105,19 @@ kubernetes:
         memory: 300Mi
       requests:
         memory: 100Mi
+  service:
+    # service replicas is limited to 1
+    resources:
+      limits:
+        cpu: 250m
+        memory: 300Mi
+      requests:
+        memory: 100Mi
+
+    # pvcName is the name for PersistentVolumeClaim for service.
+    # !Only used when nfs.enable is false.
+    # Please create this PVC in the same namespace manually.
+    pvcName: shared-volume-pvc
 
   nfs:
     enable: true
@@ -77,8 +128,10 @@ kubernetes:
     customPVC: ""
 
     # bindHostDirectory bind the host directory into nfs-server for share.
-    # Not recommend and can't used with customPVC.
+    # This is not recommended and can't used with customPVC.
     # !Note that this is not working with Docker Desktop with Windows.
     # Issue: https://github.com/sjiveson/nfs-server-alpine/issues/43
     bindHostDirectory: false
     hostPath: /recordermoe-nfs
+
+    # If none of the above is set, emptyDir will be used.
