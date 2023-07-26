@@ -1,4 +1,4 @@
-# k8s-recorder.moe [WIP]
+# k8s-recorder.moe
 
 ## Usage
 
@@ -13,6 +13,10 @@ helm repo add recordermoe https://recorder-moe.github.io/k8s-recorder.moe
 If you've already added this repository before, run `helm repo update` to get the latest package versions. You can then search for available charts with `helm search repo recordermoe`.
 
 Before installing a chart, create a `values.yaml` file and override default settings according to your needs. Download the [default values.yaml](/recordermoe/values.yaml), and edit it as required:
+
+> **Warning**\
+> The `values.yaml` must be prepared before installing the chart.\
+> The default values.yaml is a template and **cannot be used as is!**
 
 ```bash
 curl https://raw.githubusercontent.com/Recorder-moe/k8s-recorder.moe/master/recordermoe/values.yaml > values.yaml
