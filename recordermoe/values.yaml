@@ -114,24 +114,7 @@ kubernetes:
       requests:
         memory: 500Mi
 
-    # pvcName is the name for PersistentVolumeClaim for service.
-    # !Only used when nfs.enable is false.
-    # Please create this PVC in the same namespace manually.
-    pvcName: shared-volume-pvc
-
-  nfs:
-    enable: true
-
-    # customPVC is the name for PersistentVolumeClaim used as an underlay for NFS.
-    # !Please create the PVC in 'kube-system' namespace manually. (With storage about 10Gi)
-    # Keep this empty to use any other solutions below.
-    customPVC: ""
-
-    # bindHostDirectory bind the host directory into nfs-server for share.
-    # This is not recommended and can't used with customPVC.
-    # !Note that this is not working with Docker Desktop with Windows.
-    # Issue: https://github.com/sjiveson/nfs-server-alpine/issues/43
-    bindHostDirectory: false
-    hostPath: /recordermoe-nfs
-
-    # If none of the above is set, emptyDir will be used.
+    # storageClassName refers to the underlying StorageClass used for the shared volume.
+    # !This storageClass must support ReadWriteMany accessMode and set reclaimPolicy to Retain.
+    # It is recommended to set this up with NFS Server Provisioner with their helm chart. (https://github.com/kubernetes-sigs/nfs-ganesha-server-and-external-provisioner).
+    storageClassName: nfs

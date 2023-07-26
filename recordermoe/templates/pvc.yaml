@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "recorder.fullname" . }}-pvc
+  namespace: {{ .Release.Namespace }}
+  labels:
+  {{- include "recorder.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: {{ .Values.kubernetes.service.storageClassName }}
