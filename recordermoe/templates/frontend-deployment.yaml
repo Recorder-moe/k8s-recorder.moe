@@ -9,8 +9,13 @@ data:
   config.jsonc: |-
     {
       "GA_TRACKING_ID": "{{ .Values.settings.gATrackingID }}",
+{{- if eq .Values.storageService "AzureBlobStorage" }}
       "blobstorage": "{{ .Values.azureBlob.private.endpoint }}",
       "blobstorage_public": "{{ .Values.azureBlob.public.endpoint }}",
+{{- else }}
+      "blobstorage": "{{ include "s3scheme" . }}://{{ .Values.s3.endpoint }}/{{ .Values.s3.bucketName_Private }}",
+      "blobstorage_public": "{{ include "s3scheme" . }}://{{ .Values.s3.endpoint }}/{{ .Values.s3.bucketName_Public }}",
+{{- end }}
       "endpoint": "{{ .Values.azureCosmosDB.public.endpoint }}",
       "key": "{{ .Values.azureCosmosDB.public.readonlyKey }}",
       "clientId_google": "{{ .Values.oAuth2.google.clientID }}",
