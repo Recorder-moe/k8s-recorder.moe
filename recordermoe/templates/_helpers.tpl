@@ -63,8 +63,8 @@ Create the name of the service account to use
 
 {{- define "s3scheme" -}}
 {{- if .Values.s3.secure -}}
-"https"
+https
 {{- else -}}
-"http"
+http
 {{- end -}}
 {{- end }}
