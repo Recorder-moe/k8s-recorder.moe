@@ -13,6 +13,10 @@ settings:
   # If set to false, only the first registered user will be allowed and will become an admin.
   registrationAllowed: "true"
 
+# StorageService is the storage service for storing images and videos.
+# Choose 'AzureBlobStorage' or 'S3'.
+storageService: AzureBlobStorage
+
 azureBlob:
   storageAccountName: myrecorder
   storageAccountKey: YOUR_KEY
@@ -24,6 +28,20 @@ azureBlob:
   private:
     endpoint: https://myaccount.blob.core.windows.net/myprivatecontainer
     containerName: myprivatecontainer
+  # retentionDays is the number of days to keep the video files.
+  retentionDays: 4
+
+s3:
+  endpoint: s3.myendpoint.com
+  # Secure determines whether to access the endpoint through HTTPS.
+  secure: true
+  # AccessKey and SecretKey to access S3 endpoint. Write permission is required.
+  accessKey: YOUR_S3_ACCESSKEY
+  secretKey: YOUR_S3_SECRETKEY
+  # BucketName_Public is the public access bucket for images.
+  bucketName_Public: mypublicbucket
+  # BucketName_Private is the private access bucket for videos.
+  bucketName_Private: myprivatebucket
   # retentionDays is the number of days to keep the video files.
   retentionDays: 4
 

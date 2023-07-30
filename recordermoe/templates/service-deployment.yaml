@@ -38,7 +38,7 @@ spec:
         - name: Service__SharedVolumeService
           value: CustomPVC
         - name: Service__StorageService
-          value: AzureBlobStorage
+          value: {{ quote .Values.storageService }}
         - name: Service__DatabaseService
           value: AzureCosmosDB
         - name: Azure__BlobStorage__StorageAccountName
@@ -51,6 +51,20 @@ spec:
           value: {{ quote .Values.azureBlob.public.containerName }}
         - name: Azure__BlobStorage__RetentionDays
           value: {{ quote .Values.azureBlob.retentionDays }}
+        - name: S3__Endpoint
+          value: {{ quote .Values.s3.endpoint }}
+        - name: S3__Secure
+          value: {{ quote .Values.s3.secure }}
+        - name: S3__AccessKey
+          value: {{ quote .Values.s3.accessKey }}
+        - name: S3__SecretKey
+          value: {{ quote .Values.s3.secretKey }}
+        - name: S3__BucketName_Private
+          value: {{ quote .Values.s3.bucketName_Private }}
+        - name: S3__BucketName_Public
+          value: {{ quote .Values.s3.bucketName_Public }}
+        - name: S3__RetentionDays
+          value: {{ quote .Values.s3.retentionDays }}
         - name: Kubernetes__UseTheSameCluster
           value: "true"
         - name: Kubernetes__Namespace
