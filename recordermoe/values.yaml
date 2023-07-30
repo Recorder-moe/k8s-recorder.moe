@@ -118,3 +118,4 @@ kubernetes:
     # !This storageClass must support ReadWriteMany accessMode and set reclaimPolicy to Retain.
     # It is recommended to set this up with NFS Server Provisioner with their helm chart. (https://github.com/kubernetes-sigs/nfs-ganesha-server-and-external-provisioner).
     storageClassName: nfs
+    storageSize: 50Gi
