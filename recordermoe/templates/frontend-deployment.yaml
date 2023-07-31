@@ -54,8 +54,7 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 80
-        resources: {{- toYaml .Values.kubernetes.frontend.resources | nindent
-          10 }}
+        resources: {{- toYaml .Values.kubernetes.frontend.resources | nindent 10 }}
         volumeMounts:
         - mountPath: /usr/share/nginx/html/config.jsonc
           name: config-volume

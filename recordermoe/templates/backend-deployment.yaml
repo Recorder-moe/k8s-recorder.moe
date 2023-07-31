@@ -19,7 +19,13 @@ spec:
       {{- include "recorder.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-      - env:
+      - name: recorderbackend
+        image: {{ .Values.kubernetes.backend.image }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        resources: {{- toYaml .Values.kubernetes.backend.resources | nindent 10 }}
+        env:
         - name: CORS_SUPPORT_CREDENTIALS
           value: "true"
         - name: FUNCTIONS_WORKER_RUNTIME
@@ -38,12 +44,29 @@ spec:
           value: "AccountEndpoint={{ .Values.azureCosmosDB.private.endpoint }};AccountKey={{ .Values.azureCosmosDB.private.readWriteKey }};"
         - name: ConnectionStrings_Public
           value: "AccountEndpoint={{ .Values.azureCosmosDB.public.endpoint }};AccountKey={{ .Values.azureCosmosDB.public.readWriteKey }};"
+        - name: StorageService
+          value: {{ quote .Values.storageService }}
+        {{- if eq .Values.storageService "AzureBlobStorage" }}
         - name: Blob_ConnectionString
           value: "DefaultEndpointsProtocol=https;AccountName={{ .Values.azureBlob.storageAccountName }};AccountKey={{ .Values.azureBlob.storageAccountKey }};EndpointSuffix=core.windows.net"
-        - name: Blob_ContainerName
+        - name: Blob_ContainerNamePrivate
           value: {{ quote .Values.azureBlob.private.containerName }}
         - name: Blob_ContainerNamePublic
           value: {{ quote .Values.azureBlob.public.containerName }}
+        {{- else if eq .Values.storageService "S3" }}
+        - name: S3_Endpoint
+          value: {{ quote .Values.s3.endpoint }}
+        - name: S3_Secure
+          value: {{ quote .Values.s3.secure }}
+        - name: S3_AccessKey
+          value: {{ quote .Values.s3.accessKey }}
+        - name: S3_SecretKey
+          value: {{ quote .Values.s3.secretKey }}
+        - name: S3_BucketNamePrivate
+          value: {{ quote .Values.s3.bucketName_Private }}
+        - name: S3_BucketNamePublic
+          value: {{ quote .Values.s3.bucketName_Public }}
+        {{- end }}
         - name: Registration_allowed
           value: {{ quote .Values.settings.registrationAllowed }}
         - name: GITHUB_PROVIDER_AUTHENTICATION_ID
@@ -52,10 +75,3 @@ spec:
           value: {{ quote .Values.oAuth2.gitHub.clientSecret }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetes.clusterDomain }}
-        image: {{ .Values.kubernetes.backend.image }}
-        name: recorderbackend
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 80
-        resources: {{- toYaml .Values.kubernetes.backend.resources | nindent
-          10 }}
