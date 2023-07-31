@@ -52,7 +52,7 @@ spec:
           value: {{ quote .Values.oAuth2.gitHub.clientSecret }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetes.clusterDomain }}
-        image: ghcr.io/recorder-moe/livestreamrecorderbackend:latest
+        image: {{ .Values.kubernetes.backend.image }}
         name: recorderbackend
         imagePullPolicy: Always
         ports:

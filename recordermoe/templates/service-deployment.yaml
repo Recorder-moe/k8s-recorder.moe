@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: recorderservice
-        image: ghcr.io/recorder-moe/livestreamrecorderservice:latest
+        image: {{ .Values.kubernetes.service.image }}
         imagePullPolicy: Always
         resources: {{- toYaml .Values.kubernetes.service.resources | nindent
           10 }}

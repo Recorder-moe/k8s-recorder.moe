@@ -15,7 +15,7 @@ settings:
 
 # StorageService is the storage service for storing images and videos.
 # Choose 'AzureBlobStorage' or 'S3'.
-storageService: AzureBlobStorage
+storageService: S3
 
 azureBlob:
   storageAccountName: myrecorder
@@ -108,6 +108,7 @@ kubernetes:
   ingressClassName: nginx
 
   frontend:
+    image: ghcr.io/recorder-moe/livestreamrecorderfrontend:latest
     replicas: 1
     resources:
       limits:
@@ -116,6 +117,7 @@ kubernetes:
       requests:
         memory: 100Mi
   backend:
+    image: ghcr.io/recorder-moe/livestreamrecorderbackend:latest
     replicas: 1
     resources:
       limits:
@@ -124,6 +126,7 @@ kubernetes:
       requests:
         memory: 100Mi
   service:
+    image: ghcr.io/recorder-moe/livestreamrecorderservice:latest
     # service replicas is limited to 1
     resources:
       limits:
