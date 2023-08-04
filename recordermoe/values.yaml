@@ -112,27 +112,30 @@ kubernetes:
     replicas: 1
     resources:
       limits:
-        cpu: 250m
-        memory: 300Mi
+        cpu: 50m
+        memory: 30Mi
       requests:
-        memory: 100Mi
+        cpu: 10m
+        memory: 15Mi
   backend:
     image: ghcr.io/recorder-moe/livestreamrecorderbackend:latest
     replicas: 1
     resources:
       limits:
-        cpu: 250m
-        memory: 300Mi
+        cpu: 300m
+        memory: 1000Mi
       requests:
-        memory: 100Mi
+        cpu: 100m
+        memory: 300Mi
   service:
     image: ghcr.io/recorder-moe/livestreamrecorderservice:latest
     # service replicas is limited to 1
     resources:
       limits:
-        cpu: 1000m
-        memory: 1000Mi
+        cpu: 3000m
+        memory: 1500Mi
       requests:
+        cpu: 500m
         memory: 500Mi
 
     # storageClassName refers to the underlying StorageClass used for the shared volume.
