@@ -75,3 +75,7 @@ spec:
           value: {{ quote .Values.oAuth2.gitHub.clientSecret }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetes.clusterDomain }}
+        # Issue: Azure Durable Function HttpStart failure: Webhooks are not configured
+        # https://stackoverflow.com/a/64404153/8706033
+        - name: WEBSITE_HOSTNAME
+          value: {{ quote .Values.host }}
