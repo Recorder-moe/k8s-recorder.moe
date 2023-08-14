@@ -9,9 +9,13 @@ settings:
   gATrackingID: G-XXXXXXXXXX
   # adminEmail will display on the page
   adminEmail: your@email.com
+
   # registrationAllowed setting determines whether users are allowed to register.
-  # If set to false, only the first registered user will be allowed and will become an admin.
-  registrationAllowed: "true"
+  # !Notice that the first registered user will always be allowed and will become the admin.
+  # This setting only affects the second and later users.
+  # !IF YOU ENABLE THIS OPTION, YOU WILL BE RESPONSIBLE FOR COPYRIGHT ISSUES RELATED TO VIDEO DISTRIBUTION.
+  # Recorder.moe recommends that you use this system within your personal reasonable limits, and we do not assume any legal responsibility for distributing copyrighted works.
+  registrationAllowed: "false"
 
 # StorageService is the storage service for storing images and videos.
 # Choose 'AzureBlobStorage' or 'S3'.
@@ -45,19 +49,39 @@ s3:
   # retentionDays is the number of days to keep the video files.
   retentionDays: 4
 
+# DatabaseService is the database service for storing data.
+# Choose 'ApacheCouchDB' or 'AzureCosmosDB'.
+# !Remember to set kubernetes.service.image tag too.
+databaseService: ApacheCouchDB
+
 azureCosmosDB:
   # public is the database for Videos, Channels data.
   public:
+    databaseName: public
     endpoint: https://myaccount.documents.azure.com:443/
     readonlyKey: DB_PUBLIC_READONLY_KEY
     readWriteKey: DB_PUBLIC_READWRITE_KEY
   # private is the database for User data.
   private:
+    databaseName: private
     endpoint: https://myprivateaccount.documents.azure.com:443/
     readWriteKey: DB_PRIVATE_READWRITE_KEY
 
+apacheCouchDB:
+  # endpoint is the endpoint of the database.
+  endpoint: https://couchdb.recorder.moe
+  # endpoint_readonly_account is used for the frontend.
+  # !This account must only have read permission to the database for SECURITY reasons.
+  # Read the documentation for more information.
+  endpoint_readonly: https://username:password@couchdb.recorder.moe
+  # admin_account is used for the backend and service.
+  # !This account must have ADMIN permission to the database for managing indexes.
+  admin:
+    username: admin
+    password: admin
+
 # oAuth2 is the configuration for OAuth 2.0 login.
-# !Notice that you MUST setup at least one provider since this system is only using OAuth 2.0 for authentication.
+# !Notice that you MUST setup AT LEAST ONE provider since this system is only using OAuth 2.0 for authentication.
 oAuth2:
   # Input empty string to disabled
   google:
@@ -70,10 +94,15 @@ oAuth2:
   discord:
     clientID: DISCORD_CLIENTID
 
+# seq is the configuration for Seq logging server.
+# Please setup a Seq server externally and input the server url and api key here.
 seq:
   serverUrl: https://12.34.56.78
   apiKey: YOUR_API_KEY
 
+# twitch is the configuration for Twitch API.
+# Service need this to get twitch information.
+# Read the official documentation: https://dev.twitch.tv/docs/api/get-started/#register-an-application
 twitch:
   enabled: false
   clientID: TWITCH_CLIENTID
@@ -118,7 +147,9 @@ kubernetes:
         cpu: 10m
         memory: 15Mi
   backend:
-    image: ghcr.io/recorder-moe/livestreamrecorderbackend:latest
+    # image is the image of the backend.
+    # Choose 'ApacheCouchDB' or 'AzureCosmosDB' tag correctly.
+    image: ghcr.io/recorder-moe/livestreamrecorderbackend:ApacheCouchDB
     replicas: 1
     resources:
       limits:
@@ -128,7 +159,9 @@ kubernetes:
         cpu: 100m
         memory: 300Mi
   service:
-    image: ghcr.io/recorder-moe/livestreamrecorderservice:latest
+    # image is the image of the service.
+    # Choose 'ApacheCouchDB' or 'AzureCosmosDB' tag correctly.
+    image: ghcr.io/recorder-moe/livestreamrecorderservice:ApacheCouchDB
     # service replicas is limited to 1
     resources:
       limits:

@@ -16,7 +16,12 @@ data:
       "blobstorage": "{{ include "s3scheme" . }}://{{ .Values.s3.endpoint }}/{{ .Values.s3.bucketName_Private }}",
       "blobstorage_public": "{{ include "s3scheme" . }}://{{ .Values.s3.endpoint }}/{{ .Values.s3.bucketName_Public }}",
 {{- end }}
+      "database": "{{ .Values.databaseService }}",
+{{- if eq .Values.databaseService "ApacheCouchDB" }}
+      "endpoint": "{{ .Values.apacheCouchDB.endpoint_readonly }}",
+{{- else }}
       "endpoint": "{{ .Values.azureCosmosDB.public.endpoint }}",
+{{- end }}
       "key": "{{ .Values.azureCosmosDB.public.readonlyKey }}",
       "clientId_google": "{{ .Values.oAuth2.google.clientID }}",
       "clientId_github": "{{ .Values.oAuth2.gitHub.clientID }}",

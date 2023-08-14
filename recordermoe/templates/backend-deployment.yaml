@@ -40,10 +40,6 @@ spec:
           value: {{ quote .Values.seq.serverUrl }}
         - name: Seq_ApiKey
           value: {{ quote .Values.seq.apiKey }}
-        - name: ConnectionStrings_Private
-          value: "AccountEndpoint={{ .Values.azureCosmosDB.private.endpoint }};AccountKey={{ .Values.azureCosmosDB.private.readWriteKey }};"
-        - name: ConnectionStrings_Public
-          value: "AccountEndpoint={{ .Values.azureCosmosDB.public.endpoint }};AccountKey={{ .Values.azureCosmosDB.public.readWriteKey }};"
         - name: StorageService
           value: {{ quote .Values.storageService }}
         {{- if eq .Values.storageService "AzureBlobStorage" }}
@@ -67,6 +63,16 @@ spec:
         - name: S3_BucketNamePublic
           value: {{ quote .Values.s3.bucketName_Public }}
         {{- end }}
+        - name: CosmosDB_Private_ConnectionString
+          value: "AccountEndpoint={{ .Values.azureCosmosDB.private.endpoint }};AccountKey={{ .Values.azureCosmosDB.private.readWriteKey }};"
+        - name: CosmosDB_Public_ConnectionString
+          value: "AccountEndpoint={{ .Values.azureCosmosDB.public.endpoint }};AccountKey={{ .Values.azureCosmosDB.public.readWriteKey }};"
+        - name: CouchDB_Endpoint
+          value: {{ quote .Values.apacheCouchDB.endpoint }}
+        - name: CouchDB_Username
+          value: {{ quote .Values.apacheCouchDB.admin.username }}
+        - name: CouchDB_Password
+          value: {{ quote .Values.apacheCouchDB.admin.password }}
         - name: Registration_allowed
           value: {{ quote .Values.settings.registrationAllowed }}
         - name: GITHUB_PROVIDER_AUTHENTICATION_ID

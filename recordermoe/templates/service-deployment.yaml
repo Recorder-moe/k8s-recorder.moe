@@ -29,10 +29,6 @@ spec:
           value: {{ quote .Values.seq.apiKey }}
         - name: Serilog__WriteTo__0__Args__serverUrl
           value: {{ quote .Values.seq.serverUrl }}
-        - name: ConnectionStrings__Public
-          value: "AccountEndpoint={{ .Values.azureCosmosDB.public.endpoint }};AccountKey={{ .Values.azureCosmosDB.public.readWriteKey }};"
-        - name: ConnectionStrings__Private
-          value: "AccountEndpoint={{ .Values.azureCosmosDB.private.endpoint }};AccountKey={{ .Values.azureCosmosDB.private.readWriteKey }};"
         - name: Service__JobService
           value: Kubernetes
         - name: Service__SharedVolumeService
@@ -40,7 +36,7 @@ spec:
         - name: Service__StorageService
           value: {{ quote .Values.storageService }}
         - name: Service__DatabaseService
-          value: AzureCosmosDB
+          value: {{ quote .Values.databaseService }}
         - name: Azure__BlobStorage__StorageAccountName
           value: {{ quote .Values.azureBlob.storageAccountName }}
         - name: Azure__BlobStorage__StorageAccountKey
@@ -51,6 +47,26 @@ spec:
           value: {{ quote .Values.azureBlob.public.containerName }}
         - name: Azure__BlobStorage__RetentionDays
           value: {{ quote .Values.azureBlob.retentionDays }}
+        - name: Azure__CosmosDB__Public__DatabaseName
+          value: {{ quote .Values.azureCosmosDB.public.databaseName }}
+        - name: Azure__CosmosDB__Public__ConnectionStrings
+          value: "AccountEndpoint={{ .Values.azureCosmosDB.public.endpoint }};AccountKey={{ .Values.azureCosmosDB.public.readWriteKey }};"
+        - name: Azure__CosmosDB__Private__DatabaseName
+          value: {{ quote .Values.azureCosmosDB.private.databaseName }}
+        - name: Azure__CosmosDB__Private__ConnectionStrings
+          value: "AccountEndpoint={{ .Values.azureCosmosDB.private.endpoint }};AccountKey={{ .Values.azureCosmosDB.private.readWriteKey }};"
+        - name: CouchDB__Endpoint
+          value: {{ quote .Values.apacheCouchDB.endpoint }}
+        - name: CouchDB__Username
+          value: {{ quote .Values.apacheCouchDB.admin.username }}
+        - name: CouchDB__Password
+          value: {{ quote .Values.apacheCouchDB.admin.password }}
+        - name: Kubernetes__UseTheSameCluster
+          value: "true"
+        - name: Kubernetes__Namespace
+          value: {{ .Release.Namespace }}
+        - name: Kubernetes__PVCName
+          value: {{ include "recorder.fullname" . }}-pvc
         - name: S3__Endpoint
           value: {{ quote .Values.s3.endpoint }}
         - name: S3__Secure
@@ -65,12 +81,6 @@ spec:
           value: {{ quote .Values.s3.bucketName_Public }}
         - name: S3__RetentionDays
           value: {{ quote .Values.s3.retentionDays }}
-        - name: Kubernetes__UseTheSameCluster
-          value: "true"
-        - name: Kubernetes__Namespace
-          value: {{ .Release.Namespace }}
-        - name: Kubernetes__PVCName
-          value: {{ include "recorder.fullname" . }}-pvc
         - name: Twitch__Enabled
           value: {{ quote .Values.twitch.enabled }}
         - name: Twitch__ClientId
