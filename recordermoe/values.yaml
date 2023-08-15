@@ -131,10 +131,24 @@ heartbeat:
 kubernetes:
   clusterDomain: cluster.local
 
-  # ingressClassName is for frontend and backend ingress settings.
-  # When using Traefik set this to "traefik".
-  # When using docker desktop kubernetes install ingress-nginx controller and set this to "nginx".
-  ingressClassName: nginx
+  # ingress is for frontend and backend ingress settings.
+  ingress:
+    labels: {}
+
+    # traefik annotations: https://doc.traefik.io/traefik/routing/providers/kubernetes-ingress/#on-ingress
+    annotations: {}
+      # traefik.ingress.kubernetes.io/router.tls: "true"
+      # traefik.ingress.kubernetes.io/router.tls.certresolver: letsencrypt
+      # traefik.ingress.kubernetes.io/router.tls.domains.0.main: "*.recorder.moe"
+
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+    # When using Traefik set this to "traefik".
+    # When using docker desktop kubernetes install ingress-nginx controller and set this to "nginx".
+    className: nginx
 
   frontend:
     image: ghcr.io/recorder-moe/livestreamrecorderfrontend:latest

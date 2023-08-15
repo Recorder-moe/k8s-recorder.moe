@@ -5,11 +5,28 @@ metadata:
   name: {{ include "recorder.fullname" . }}-ingress
   namespace: {{ .Release.Namespace }}
   labels:
-  {{- include "recorder.labels" . | nindent 4 }}
+{{- include "recorder.labels" . | nindent 4 }}
+{{- if .Values.kubernetes.ingress.labels }}
+{{ toYaml .Values.kubernetes.ingress.labels | indent 4 }}
+{{- end }}
+{{- with .Values.kubernetes.ingress.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
 spec:
-  {{- if .Values.kubernetes.ingressClassName }}
-  ingressClassName: {{ .Values.kubernetes.ingressClassName }}
+{{- if .Values.kubernetes.ingress.tls }}
+  tls:
+  {{- range .Values.kubernetes.ingress.tls }}
+    - hosts:
+    {{- range .hosts }}
+      - {{ . | quote }}
+    {{- end }}
+      secretName: {{ .secretName }}
   {{- end }}
+{{- end }}
+{{- if .Values.kubernetes.ingress.className }}
+  ingressClassName: {{ .Values.kubernetes.ingress.className | quote }}
+{{- end }}
   rules:
   - host: {{ .Values.host }}
     http:
