@@ -167,7 +167,7 @@ kubernetes:
     replicas: 1
     resources:
       limits:
-        cpu: 300m
+        cpu: 1000m
         memory: 1000Mi
       requests:
         cpu: 100m
@@ -180,10 +180,10 @@ kubernetes:
     resources:
       limits:
         cpu: 3000m
-        memory: 1500Mi
+        memory: 4000Mi
       requests:
         cpu: 500m
-        memory: 500Mi
+        memory: 1500Mi
 
     # storageClassName refers to the underlying StorageClass used for the shared volume.
     # !This storageClass must support ReadWriteMany accessMode and set reclaimPolicy to Retain.
