@@ -3,6 +3,34 @@ entries:
   recordermoe:
   - apiVersion: v2
     appVersion: 0.1.0
+    created: "2023-08-18T12:33:31.751556034Z"
+    description: Recorder.moe is an advanced open-source automation live streams recording
+      system.
+    digest: a24f62e960c8ac6424f584446c3834c73c45902ac6ad360f4ee6cc8304b90fc9
+    home: https://recorder.moe
+    icon: https://raw.githubusercontent.com/Recorder-moe/k8s-recorder.moe/master/logo-color-big.png
+    keywords:
+    - recorder.moe
+    - recorder
+    - recording
+    - youtube-downloader
+    - youtube-dl
+    - yt-dlp
+    - youtube
+    - twitcasting
+    - twitch
+    - fc2
+    maintainers:
+    - email: service@recorder.moe
+      name: Recorder.moe
+      url: https://github.com/Recorder-moe
+    name: recordermoe
+    type: application
+    urls:
+    - https://github.com/Recorder-moe/k8s-recorder.moe/releases/download/recordermoe-0.3.2/recordermoe-0.3.2.tgz
+    version: 0.3.2
+  - apiVersion: v2
+    appVersion: 0.1.0
     created: "2023-08-17T20:27:29.210662196Z"
     description: Recorder.moe is an advanced open-source automation live streams recording
       system.
@@ -589,4 +617,4 @@ entries:
     urls:
     - https://github.com/Recorder-moe/k8s-recorder.moe/releases/download/recordermoe-0.1.0/recordermoe-0.1.0.tgz
     version: 0.1.0
-generated: "2023-08-17T20:27:29.210892304Z"
+generated: "2023-08-18T12:33:31.751688236Z"
