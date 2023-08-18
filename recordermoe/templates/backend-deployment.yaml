@@ -35,7 +35,7 @@ spec:
         - name: FrontEndUri
           value: "https://{{ .Values.host }}"
         - name: AzureWebJobsStorage
-          value: "DefaultEndpointsProtocol=https;AccountName={{ .Values.azureBlob.storageAccountName }};AccountKey={{ .Values.azureBlob.storageAccountKey }};EndpointSuffix=core.windows.net"
+          value: "UseDevelopmentStorage=true"
         - name: Seq_ServerUrl
           value: {{ quote .Values.seq.serverUrl }}
         - name: Seq_ApiKey
@@ -85,3 +85,11 @@ spec:
         # https://stackoverflow.com/a/64404153/8706033
         - name: WEBSITE_HOSTNAME
           value: {{ quote .Values.host }}
+      - name: azurite-emulator
+        image: mcr.microsoft.com/azure-storage/azurite
+        imagePullPolicy: IfNotPresent
+        resources: {{- toYaml .Values.kubernetes.backend.resources | nindent 10 }}
+        ports:
+        - containerPort: 10000
+        - containerPort: 10001
+        - containerPort: 10002
