@@ -128,6 +128,11 @@ heartbeat:
   enabled: false
   endpoint: ""
 
+# statusUrl is the url of the status page.
+# Input empty string to disabled
+# Example: https://status.recorder.moe
+statusUrl: ""
+
 kubernetes:
   clusterDomain: cluster.local
 

@@ -28,6 +28,7 @@ data:
       "clientId_microsoft": "{{ .Values.oAuth2.microsoft.clientID }}",
       "clientId_discord": "{{ .Values.oAuth2.discord.clientID }}",
       "apiUrl": "https://{{ .Values.host }}",
+      "statusUrl": "{{ .Values.statusUrl }}",
       "adminEmail": "{{ .Values.settings.adminEmail }}"
     }
 ---
