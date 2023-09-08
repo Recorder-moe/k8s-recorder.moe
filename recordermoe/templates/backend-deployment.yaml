@@ -8,6 +8,8 @@ metadata:
   {{- include "recorder.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.kubernetes.backend.replicas }}
+  strategy:
+    type: RollingUpdate
   selector:
     matchLabels:
       app: recorderbackend

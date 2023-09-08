@@ -181,7 +181,7 @@ kubernetes:
     # image is the image of the service.
     # Choose 'ApacheCouchDB' or 'AzureCosmosDB' tag correctly.
     image: ghcr.io/recorder-moe/livestreamrecorderservice:ApacheCouchDB
-    # service replicas is limited to 1
+    # Note: service replicas is limited to 1
     resources:
       limits:
         cpu: 3000m
