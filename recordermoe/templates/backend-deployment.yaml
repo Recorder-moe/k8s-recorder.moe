@@ -20,12 +20,11 @@ spec:
         app: recorderbackend
       {{- include "recorder.selectorLabels" . | nindent 8 }}
     spec:
-      securityContext:
-        runAsUser: 1001
-        runAsGroup: 0
-        fsGroup: 0
       containers:
       - name: recorderbackend
+        securityContext:
+          runAsUser: 1001
+          runAsGroup: 0
         image: {{ .Values.kubernetes.backend.image }}
         imagePullPolicy: Always
         ports:
