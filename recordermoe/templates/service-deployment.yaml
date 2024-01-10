@@ -20,6 +20,10 @@ spec:
         app: recorderservice
       {{- include "recorder.selectorLabels" . | nindent 8 }}
     spec:
+      securityContext:
+        runAsUser: 1654
+        runAsGroup: 0
+        fsGroup: 0
       containers:
       - name: recorderservice
         image: {{ .Values.kubernetes.service.image }}
