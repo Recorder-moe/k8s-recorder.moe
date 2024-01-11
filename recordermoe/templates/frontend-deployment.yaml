@@ -57,7 +57,6 @@ spec:
         runAsUser: 101
         runAsGroup: 0
         fsGroup: 0
-        allowPrivilegeEscalation: false
       containers:
       - env:
         - name: KUBERNETES_CLUSTER_DOMAIN
@@ -72,6 +71,8 @@ spec:
         - mountPath: /usr/share/nginx/html/config.jsonc
           name: config-volume
           subPath: config.jsonc
+        securityContext:
+          allowPrivilegeEscalation: false
       volumes:
       - configMap:
           name: {{ include "recorder.fullname" . }}-config

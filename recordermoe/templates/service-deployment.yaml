@@ -24,7 +24,6 @@ spec:
         runAsUser: 1654
         runAsGroup: 0
         fsGroup: 0
-        allowPrivilegeEscalation: false
       containers:
       - name: recorderservice
         image: {{ .Values.kubernetes.service.image }}
@@ -128,3 +127,5 @@ spec:
           value: "300"
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetes.clusterDomain }}
+        securityContext:
+          allowPrivilegeEscalation: false
