@@ -53,6 +53,11 @@ spec:
         app: recorderfrontend
       {{- include "recorder.selectorLabels" . | nindent 8 }}
     spec:
+      securityContext:
+        runAsUser: 101
+        runAsGroup: 0
+        fsGroup: 0
+        allowPrivilegeEscalation: false
       containers:
       - env:
         - name: KUBERNETES_CLUSTER_DOMAIN
@@ -61,7 +66,7 @@ spec:
         name: recorderfrontend
         imagePullPolicy: Always
         ports:
-        - containerPort: 80
+        - containerPort: 8080
         resources: {{- toYaml .Values.kubernetes.frontend.resources | nindent 10 }}
         volumeMounts:
         - mountPath: /usr/share/nginx/html/config.jsonc

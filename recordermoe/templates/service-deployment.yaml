@@ -24,6 +24,7 @@ spec:
         runAsUser: 1654
         runAsGroup: 0
         fsGroup: 0
+        allowPrivilegeEscalation: false
       containers:
       - name: recorderservice
         image: {{ .Values.kubernetes.service.image }}

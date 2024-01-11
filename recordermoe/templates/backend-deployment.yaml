@@ -25,6 +25,7 @@ spec:
         securityContext:
           runAsUser: 1001
           runAsGroup: 0
+          allowPrivilegeEscalation: false
         image: {{ .Values.kubernetes.backend.image }}
         imagePullPolicy: Always
         ports:
